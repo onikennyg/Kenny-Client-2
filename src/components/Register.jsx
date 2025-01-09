@@ -9,14 +9,12 @@ import {
   FaFacebook,
   FaTwitter,
   FaLinkedin,
-  FaGoogle,
   FaInstagram,
 } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-
+import { GoogleLogin } from "@react-oauth/google";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,17 +23,14 @@ const Signup = () => {
     JSON.parse(localStorage.getItem("auth")) || ""
   );
 
-  const googleID =
-    "418980168354-o6oghiov127pph7dnb663aj0pjqif26d.apps.googleusercontent.com";
+  const handleGoogleSuccess = (response) => {
+    console.log("Google login success:", response.credential);
+    // Handle user data or token here
+  };
 
-    const handleGoogleSuccess = (credentialResponse) => {
-      console.log("Google login success:", credentialResponse);
-      // Handle user data or token here
-    };
-  
-    const handleGoogleFailure = (error) => {
-      console.error("Google login failed:", error);
-    };
+  const handleGoogleFailure = (error) => {
+    console.error("Google login failed:", error);
+  };
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +71,7 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-100 to-green-200">
-      <div className=" mt-2 mb-2 flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="mt-2 mb-2 flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex-1 p-8 flex flex-col items-center justify-center bg-gradient-to-b from-green-300 to-green-500">
           <img
             src="https://img.freepik.com/free-vector/sign-page-abstract-concept-illustration_335657-3875.jpg?w=740"
@@ -90,15 +85,13 @@ const Signup = () => {
             <div className="text-center pb-10">
               <img src={scrumban} alt="Logo" className="w-20 h-20 mx-auto" />
               <h2 className="text-3xl mb-2">Welcome to our website!</h2>
-              <p className="text-lg font-light mb-2">
-                Please enter your details
-              </p>
+              <p className="text-lg font-light mb-2">Please enter your details</p>
             </div>
             <form
               onSubmit={handleRegisterSubmit}
               className="flex flex-col space-y-1"
             >
-              <div className="flex space-x-4"> 
+              <div className="flex space-x-4">
                 <input
                   type="text"
                   placeholder="Firstname"
@@ -122,12 +115,12 @@ const Signup = () => {
                 required
               />
               <input
-              type="phone"
-              placeholder="Phone Number"
-              name="phone"
-              className="w-full p-4 border-b border-black outline-none"
-              required
-            />
+                type="phone"
+                placeholder="Phone Number"
+                name="phone"
+                className="w-full p-4 border-b border-black outline-none"
+                required
+              />
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -177,19 +170,18 @@ const Signup = () => {
                 </button>
               </div>
               <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleFailure}
-                  useOneTap={true} // Optional: enables One Tap login
-                  render={(renderProps) => (
-                    <div
-                      onClick={renderProps.onClick}
-                      className="w-full p-4 mt-4 flex items-center justify-center space-x-2 bg-gray-300 hover:bg-gray-400 rounded-full cursor-pointer"
-                    >
-                      <img src={GoogleSvg} alt="" className="w-6" />
-                      <span>Log In with Google</span>
-                    </div>
-                  )}
-                />
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleFailure}
+                render={(renderProps) => (
+                  <div
+                    onClick={renderProps.onClick}
+                    className="w-full p-4 mt-4 flex items-center justify-center space-x-2 bg-gray-300 hover:bg-gray-400 rounded-full cursor-pointer"
+                  >
+                    <img src={GoogleSvg} alt="" className="w-6" />
+                    <span>Sign up with Google</span>
+                  </div>
+                )}
+              />
             </form>
             <p className="text-center mt-6 text-sm">
               Already have an account?{" "}

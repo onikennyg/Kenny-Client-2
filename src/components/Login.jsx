@@ -9,14 +9,12 @@ import {
   FaFacebook,
   FaTwitter,
   FaLinkedin,
-  FaGoogle,
   FaInstagram,
 } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,16 +23,14 @@ const Login = () => {
   );
   const navigate = useNavigate();
 
-  const googleID =
-    "418980168354-o6oghiov127pph7dnb663aj0pjqif26d.apps.googleusercontent.com";
-
   const handleGoogleSuccess = (response) => {
-  console.log("Google login success:", response.credential); // Updated
-};
-
+    console.log("Google login success:", response.credential);
+    // Handle successful Google login
+  };
 
   const handleGoogleFailure = (error) => {
     console.error("Google login failed:", error);
+    // Handle failed Google login
   };
 
   const handleLoginSubmit = async (e) => {
@@ -68,12 +64,12 @@ const Login = () => {
     }
   }, []);
 
-  return (<GoogleOAuthProvider>
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300">
       <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex-1 p-8 flex flex-col items-center justify-center bg-gradient-to-b from-blue-300 to-blue-500">
           <img
-            src="https://img.freepik.com/free-photo/computer-security-with-login-password-padlock_107791-16191.jpg?t=st=1735375418~exp=1735379018~hmac=0cf161eae16ada279a5732e32580b544f996f7c6ac5d6e79a99be2135ef08170&w=740"
+            src="https://img.freepik.com/free-photo/computer-security-with-login-password-padlock_107791-16191.jpg"
             alt="Illustration"
             className="w-3/4 mb-6"
           />
@@ -140,20 +136,9 @@ const Login = () => {
                   Log In
                 </button>
                 <GoogleLogin
-                clientId={googleID}
-                onSuccess={handleGoogleSuccess}
-                onFailure={handleGoogleFailure}
-                cookiePolicy={"single_host_origin"}
-                render={(renderProps) => (
-                  <div
-                    onClick={renderProps.onClick}
-                    className="w-full p-4 mt-4 flex items-center justify-center space-x-2 bg-gray-300 hover:bg-gray-400 rounded-full cursor-pointer"
-                  >
-                    <img src={GoogleSvg} alt="" className="w-6" />
-                    <span>Sign up with Google</span>
-                  </div>
-                )}
-              />
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleFailure}
+                />
               </form>
               <p className="text-center text-sm mt-10">
                 Don't have an account?{" "}
@@ -203,8 +188,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  
-  </GoogleOAuthProvider>);
+  );
 };
 
 export default Login;
